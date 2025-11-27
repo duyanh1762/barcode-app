@@ -1,6 +1,6 @@
 <nav style="padding:12px;background:#eee;display:flex;gap:16px">
-  <a routerLink="/scan">Quét mã</a>
-  <a routerLink="/list">Danh sách</a>
+  <a routerLink="/scan" (click)="navigator('/scan')">Quét mã</a>
+  <a routerLink="/list" (click)="navigator('/list')">Danh sách</a>
 </nav>
 
 <router-outlet></router-outlet>
