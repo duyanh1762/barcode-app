@@ -49,28 +49,33 @@ export class ScanComponent implements OnInit, OnDestroy {
     this.stopScan();
   }
 
-  async startScan() {
-    const devices = await BrowserMultiFormatReader.listVideoInputDevices();
-    if (!devices.length) {
-      alert('Không tìm thấy camera!');
-      return;
-    }
-
-    const deviceId = devices[0].deviceId;
-
-    // Bắt đầu decode liên tục
-    this.scannerControls = await this.reader.decodeFromVideoDevice(
-      deviceId,
-      'video',
-      (result, error, controls) => {
-        if (result) {
-          this.barcode = result.getText();
-          // Dừng camera sau khi quét được
-          controls.stop();
-        }
-      }
-    );
+async startScan() {
+  const devices = await BrowserMultiFormatReader.listVideoInputDevices();
+  if (!devices.length) {
+    alert('Không tìm thấy camera!');
+    return;
   }
+
+  // Tìm camera sau (back) nếu có, fallback về camera đầu tiên
+  const rearCamera = devices.find(d => d.label.toLowerCase().includes('back'))?.deviceId
+                     || devices[0].deviceId;
+
+  console.log('Sử dụng camera:', devices.find(d => d.deviceId === rearCamera)?.label);
+
+  // Bắt đầu decode liên tục
+  this.scannerControls = await this.reader.decodeFromVideoDevice(
+    rearCamera,
+    'video',
+    (result, error, controls) => {
+      if (result) {
+        this.barcode = result.getText();
+        // Dừng camera sau khi quét được
+        controls.stop();
+      }
+    }
+  );
+}
+
 
   stopScan() {
     if (this.scannerControls) {
