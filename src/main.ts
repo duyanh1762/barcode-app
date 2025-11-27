@@ -1,6 +1,24 @@
 import { bootstrapApplication } from '@angular/platform-browser';
-import { appConfig } from './app/app.config';
+import { provideRouter } from '@angular/router';
+import { provideAnimations } from '@angular/platform-browser/animations';
 import { AppComponent } from './app/app.component';
 
-bootstrapApplication(AppComponent, appConfig)
-  .catch((err) => console.error(err));
+import { ScanComponent } from './app/scan/scan.component';
+import { ProductListComponent } from './app/product-list/product-list.component';
+import { provideServiceWorker } from '@angular/service-worker';
+import { isDevMode } from '@angular/core';
+
+bootstrapApplication(AppComponent, {
+  providers: [
+    provideRouter([
+        { path: '', redirectTo: 'scan', pathMatch: 'full' },
+        { path: 'scan', component: ScanComponent },
+        { path: 'list', component: ProductListComponent },
+    ]),
+    provideAnimations(),
+    provideServiceWorker('ngsw-worker.js', {
+        enabled: !isDevMode(),
+        registrationStrategy: 'registerWhenStable:30000'
+    })
+]
+});
