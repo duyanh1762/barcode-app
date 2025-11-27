@@ -7,11 +7,16 @@ import { NgIf } from '@angular/common';
 @Component({
   selector: 'app-scan',
   standalone: true,
-  imports: [FormsModule,NgIf],
+  imports: [FormsModule, NgIf],
   template: `
     <h2>Quét mã vạch</h2>
 
-    <video #video id="video" style="width:100%;height:auto;background:#000" autoplay muted playsinline></video>
+    <video #video
+           id="video"
+           autoplay
+           muted
+           playsinline
+           style="width:100%;height:auto;background:#000"></video>
 
     <div *ngIf="barcode" style="margin-top:16px">
       <p>Mã vạch: <b>{{ barcode }}</b></p>
@@ -49,33 +54,34 @@ export class ScanComponent implements OnInit, OnDestroy {
     this.stopScan();
   }
 
-async startScan() {
-  const devices = await BrowserMultiFormatReader.listVideoInputDevices();
-  if (!devices.length) {
-    alert('Không tìm thấy camera!');
-    return;
-  }
-
-  // Tìm camera sau (back) nếu có, fallback về camera đầu tiên
-  const rearCamera = devices.find(d => d.label.toLowerCase().includes('back'))?.deviceId
-                     || devices[0].deviceId;
-
-  console.log('Sử dụng camera:', devices.find(d => d.deviceId === rearCamera)?.label);
-
-  // Bắt đầu decode liên tục
-  this.scannerControls = await this.reader.decodeFromVideoDevice(
-    rearCamera,
-    'video',
-    (result, error, controls) => {
-      if (result) {
-        this.barcode = result.getText();
-        // Dừng camera sau khi quét được
-        controls.stop();
-      }
+  async startScan() {
+    const devices = await BrowserMultiFormatReader.listVideoInputDevices();
+    if (!devices.length) {
+      alert('Không tìm thấy camera!');
+      return;
     }
-  );
-}
 
+    // Tìm camera sau (back) theo label nếu có, fallback deviceId cuối
+    let rearCamera = devices.find(d => d.label.toLowerCase().includes('back'))?.deviceId;
+    if (!rearCamera) {
+      rearCamera = devices[devices.length - 1].deviceId;
+    }
+
+    console.log('Sử dụng camera:', devices.find(d => d.deviceId === rearCamera)?.label || rearCamera);
+
+    // Bắt đầu decode liên tục
+    this.scannerControls = await this.reader.decodeFromVideoDevice(
+      rearCamera,
+      'video',
+      (result, error, controls) => {
+        if (result) {
+          this.barcode = result.getText();
+          // Dừng camera sau khi quét được
+          controls.stop();
+        }
+      }
+    );
+  }
 
   stopScan() {
     if (this.scannerControls) {
