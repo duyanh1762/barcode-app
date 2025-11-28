@@ -1,0 +1,33 @@
+nav {
+  padding: 10px 0;
+  background: #ffffff;
+  display: flex;
+  justify-content: space-around;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  margin-bottom: 12px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+nav a {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 8px 16px;
+  color: #555;
+  border-radius: 6px;
+  transition: 0.25s ease;
+}
+
+nav a:hover {
+  background: #f0f0f0;
+  color: #333;
+}
+
+nav a.active-link {
+  background: #4CAF50;
+  color: white;
+  box-shadow: 0 2px 6px rgba(76,175,80,0.3);
+}

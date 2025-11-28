@@ -8,38 +8,14 @@ import { NgIf } from '@angular/common';
   selector: 'app-scan',
   standalone: true,
   imports: [FormsModule, NgIf],
-  template: `
-    <h2>Quét mã vạch</h2>
-
-    <video #video
-           id="video"
-           autoplay
-           muted
-           playsinline
-           style="width:100%;height:auto;background:#000"></video>
-
-    <div *ngIf="barcode" style="margin-top:16px">
-      <p>Mã vạch: <b>{{ barcode }}</b></p>
-
-      <label>Tên</label>
-      <input [(ngModel)]="name" />
-
-      <label>Giá</label>
-      <input [(ngModel)]="price" type="number" />
-
-      <label>Hạn sử dụng</label>
-      <input [(ngModel)]="expiry" type="date" />
-
-      <button (click)="save()">Lưu</button>
-    </div>
-  `
+  templateUrl: './scan.component.html',
+  styleUrls: ['./scan.component.css']
 })
 export class ScanComponent implements OnInit, OnDestroy {
 
   barcode = '';
   name = '';
   price: number | null = null;
-  expiry = '';
 
   reader = new BrowserMultiFormatReader();
   private scannerControls?: IScannerControls;
@@ -95,7 +71,6 @@ export class ScanComponent implements OnInit, OnDestroy {
       barcode: this.barcode,
       name: this.name,
       price: this.price,
-      expiry: this.expiry,
       createdAt: new Date().toISOString(),
     });
 
@@ -103,7 +78,6 @@ export class ScanComponent implements OnInit, OnDestroy {
     this.barcode = '';
     this.name = '';
     this.price = null;
-    this.expiry = '';
 
     this.startScan(); // scan tiếp
   }

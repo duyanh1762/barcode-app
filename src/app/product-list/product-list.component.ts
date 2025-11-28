@@ -7,30 +7,8 @@ import { NgFor, NgIf } from '@angular/common';
   selector: 'app-product-list',
   standalone: true,
   imports: [NgFor,NgIf],
-  template: `
-    <h2>Danh sách sản phẩm</h2>
-
-    <button (click)="export()">Export CSV</button>
-    <button style="margin-left:8px" (click)="clear()">Xoá tất cả</button>
-
-    <table *ngIf="products.length">
-      <tr>
-        <th>Mã</th>
-        <th>Tên</th>
-        <th>Giá</th>
-        <th>HSD</th>
-      </tr>
-
-      <tr *ngFor="let p of products">
-        <td>{{ p.barcode }}</td>
-        <td>{{ p.name }}</td>
-        <td>{{ p.price }}</td>
-        <td>{{ p.expiry }}</td>
-      </tr>
-    </table>
-
-    <p *ngIf="!products.length">Chưa có dữ liệu.</p>
-  `
+  templateUrl: './product-list.component.html',
+  styleUrls: ['./product-list.component.css']
 })
 export class ProductListComponent {
   products = this.storage.getAll();

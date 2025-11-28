@@ -1,0 +1,22 @@
+<h2>Danh sách sản phẩm</h2>
+
+<table *ngIf="products.length">
+  <tr>
+    <th>Mã</th>
+    <th>Tên</th>
+    <th>Giá</th>
+  </tr>
+
+  <tr *ngFor="let p of products">
+    <td>{{ p.barcode }}</td>
+    <td>{{ p.name }}</td>
+    <td>{{ p.price }}</td>
+  </tr>
+</table>
+
+<p *ngIf="!products.length">Chưa có dữ liệu !</p>
+
+<div class="action">
+  <button (click)="export()">Export CSV</button>
+  <button style="margin-left: 8px" (click)="clear()">Xoá tất cả</button>
+</div>
