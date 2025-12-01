@@ -13,8 +13,9 @@ import { NgIf } from '@angular/common';
 })
 export class ScanComponent implements OnInit, OnDestroy {
 
-  barcode = '';
-  name = '';
+  barcode: string = '';
+  name: string = '';
+  group: string = '';
   price: number | null = null;
 
   reader = new BrowserMultiFormatReader();
@@ -71,12 +72,14 @@ export class ScanComponent implements OnInit, OnDestroy {
       barcode: this.barcode,
       name: this.name,
       price: this.price,
+      group: this.group,
       createdAt: new Date().toISOString(),
     });
 
     // reset form
     this.barcode = '';
     this.name = '';
+    this.group = '';
     this.price = null;
 
     this.startScan(); // scan tiếp
