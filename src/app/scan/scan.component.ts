@@ -74,10 +74,10 @@ export class ScanComponent implements OnInit, OnDestroy {
 
   save() {
     if (
-      this.barcode.trim() === '' ||
-      this.name.trim() === '' ||
-      this.group.trim() === '' ||
-      this.unit.trim() === '' ||
+      this.barcode.length <= 0 ||
+      this.name.length <=0 ||
+      this.group.length <= 0 ||
+      this.unit.length <= 0 ||
       this.price === null
     ) {
       alert('Vui lòng điền đầy đủ thông tin sản phẩm!');
