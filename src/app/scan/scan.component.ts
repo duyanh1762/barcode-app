@@ -16,6 +16,7 @@ export class ScanComponent implements OnInit, OnDestroy {
   barcode: string = '';
   name: string = '';
   group: string = '';
+  unit:string = '';
   price: number | null = null;
 
   reader = new BrowserMultiFormatReader();
@@ -73,6 +74,7 @@ export class ScanComponent implements OnInit, OnDestroy {
       name: this.name,
       price: this.price,
       group: this.group,
+      unit: this.unit,
       createdAt: new Date().toISOString(),
     });
 
@@ -80,6 +82,7 @@ export class ScanComponent implements OnInit, OnDestroy {
     this.barcode = '';
     this.name = '';
     this.group = '';
+    this.unit = '';
     this.price = null;
 
     this.startScan(); // scan tiếp
