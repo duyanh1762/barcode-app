@@ -9,14 +9,13 @@ import { NgIf } from '@angular/common';
   standalone: true,
   imports: [FormsModule, NgIf],
   templateUrl: './scan.component.html',
-  styleUrls: ['./scan.component.css']
+  styleUrls: ['./scan.component.css'],
 })
 export class ScanComponent implements OnInit, OnDestroy {
-
   barcode: string = '';
   name: string = '';
   group: string = '';
-  unit:string = '';
+  unit: string = '';
   price: number | null = null;
 
   reader = new BrowserMultiFormatReader();
@@ -40,12 +39,17 @@ export class ScanComponent implements OnInit, OnDestroy {
     }
 
     // Tìm camera sau (back) theo label nếu có, fallback deviceId cuối
-    let rearCamera = devices.find(d => d.label.toLowerCase().includes('back'))?.deviceId;
+    let rearCamera = devices.find((d) =>
+      d.label.toLowerCase().includes('back')
+    )?.deviceId;
     if (!rearCamera) {
       rearCamera = devices[devices.length - 1].deviceId;
     }
 
-    console.log('Sử dụng camera:', devices.find(d => d.deviceId === rearCamera)?.label || rearCamera);
+    console.log(
+      'Sử dụng camera:',
+      devices.find((d) => d.deviceId === rearCamera)?.label || rearCamera
+    );
 
     // Bắt đầu decode liên tục
     this.scannerControls = await this.reader.decodeFromVideoDevice(
@@ -69,22 +73,32 @@ export class ScanComponent implements OnInit, OnDestroy {
   }
 
   save() {
-    this.storage.add({
-      barcode: this.barcode,
-      name: this.name,
-      price: this.price,
-      group: this.group,
-      unit: this.unit,
-      createdAt: new Date().toISOString(),
-    });
+    if (
+      this.barcode.trim() === '' ||
+      this.name.trim() === '' ||
+      this.group.trim() === '' ||
+      this.unit.trim() === '' ||
+      this.price === null
+    ) {
+      alert('Vui lòng điền đầy đủ thông tin sản phẩm!');
+    } else {
+      this.storage.add({
+        barcode: this.barcode,
+        name: this.name,
+        price: this.price,
+        group: this.group,
+        unit: this.unit,
+        createdAt: new Date().toISOString(),
+      });
 
-    // reset form
-    this.barcode = '';
-    this.name = '';
-    this.group = '';
-    this.unit = '';
-    this.price = null;
+      // reset form
+      this.barcode = '';
+      this.name = '';
+      this.group = '';
+      this.unit = '';
+      this.price = null;
 
-    this.startScan(); // scan tiếp
+      this.startScan(); // scan tiếp
+    }
   }
 }
